@@ -17,9 +17,18 @@ alphabet.append('0-9')
 # CONCAT ALPHABET AND 0-9 TO BASE URL 
 base_url = 'https://www.cannaconnection.com/strains?show_char='
 
+def getCannaPage(character, base_url=base_url):
+	page_url = base_url + character
+	print(page_url)
 
+	
+#	r = requests.get(page_url)
+#	soup = BeautifulSoup(r.text, features="html.parser")
+#	agent_cards = soup.find_all(class_="agent-list-card")
+#	return agent_cards
 
-
+for character in alphabet:
+	getCannaPage(character)
 
 
 exit()
