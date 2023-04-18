@@ -1,18 +1,18 @@
 # Python Android Quiz App
 
-#### Test your knowledge of cannabis genetics with this
+#### Test your knowledge of cannabis genetics with this Android app created with Python Kivy.
 
-android app created with Python Kivy.
+Live demo: https://invisispider.github.io/app/build/quiz.apk
 
-## SCRAPING THE DATABASE
+## Scraping The Data From www.cannaconnection.com
 
-### Installing the Scrape Environment
+If you wish to refresh the app data or scrape for yourself, go to the `cannaconnection-web-scrape` folder and follow the README.
+
+### Installing the Python Environment
 
 This is just a basic python virtual environment set up.
-We will use this script to get strain data from www.cannaconnection.com.
-If you want to skip this step, just use the data provided in `strain_data.csv`.
 
-`cd` into your scraper project folder and create a virtual environment:
+`cd` into your project folder and create a virtual environment:
 `python3 -m venv ./`
 
 activate the environment: 
@@ -21,14 +21,10 @@ activate the environment:
 Install the required python libraries:
 `pip3 install -r requirements.txt`
 
-### Scraping the Strain Data
-Use `python3 get_strain_list.py` to the urls for all strains in a csv file which parses the strain names to the proper urls. There are some inconsistencies in their url scheme, so a few of them will be skipped because I didn't care to manually check every strain name. Note: I also avoided autoflowering strains.
+### Building the Quiz App
 
-Run `python3 scrape_strains.py` to go to each
-strain url and add strain data to a pandas dataframe.
-The scrape will try not to overload the server and
-get connection refused error, but I'm only guessing. 
-If succesful, it will
-create the database that will serve as the source
-for the quiz app.
+The `app` folder contains the Quiz App source code.
 
+The completed app can be downloaded and installed from `app/build` folder.
+
+#### If you like it, or use the data, be sure to star this repo!
