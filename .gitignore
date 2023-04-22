@@ -8,3 +8,5 @@ lib64
 *.cfg
 
 access.txt
+
+database-editor
