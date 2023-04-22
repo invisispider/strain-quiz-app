@@ -7,6 +7,13 @@ from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 
+# @TODO better transitions?
+# @TODO build
+# @TODO test on phone
+# @TODO give to Adam to try
+# @TODO edit the markdown and push final to github
+# @TODO see if it's possible to make a Pages demo
+
 def read_csv_file():
 	with open("straindata.csv") as file:
 		reader = csv.reader(file)
@@ -41,6 +48,7 @@ def select_question_and_answers(data=data):
 	q = data[ind]
 	strain = Strain(q[0], q[1], q[2], q[3], q[4], q[5], q[6])
 	question = strain.name
+	question_info = strain
 	answer = strain.parents
 
 	data = remove_strain(ind)
@@ -50,14 +58,15 @@ def select_question_and_answers(data=data):
 		if wrong_parent not in answers:
 			answers.append(wrong_parent)
 
-	return data, question, answer, answers
+	return data, question, question_info, answer, answers
 
 class QuestionWindow(GridLayout):
 
 	def __init__(self, data=data):
 		super().__init__()
-		self.data, self.question, self.answer, self.answers = select_question_and_answers()
-		self.play_to = 5
+		self.data, self.question, self.question_info, self.answer, self.answers = select_question_and_answers()
+		# self.play_to = 30
+		self.play_to = 4
 		self.max_label = self.play_to
 		self.remaining = self.play_to
 		self.score = 0
@@ -68,10 +77,8 @@ class QuestionWindow(GridLayout):
 	def if_question_incorrect(self):
 		popup = Popup(title='Information',content=Label(text=f'Incorrect\n\nStrain: {self.question}\n\nParents: {self.answer}\n\nscore  :  {self.scoreLabel.text}'),
                       size_hint=(None,None),
-                      size=(500,500),
-                      pos_hint={'x': 550.0 / self.width,
-                                'y': 300.0 / self.height},
-                      )
+                      size=(500,500))
+
 		popup.open()
 		self.button1.text = ''
 		self.button2.text = ''
@@ -79,17 +86,14 @@ class QuestionWindow(GridLayout):
 		self.button4.text = ''
 		self.questionLabel.text = ''
 		self.scoreLabel.text = str(int(self.score)) + " / " + str(self.max_label)
-		# print('Correct answer : ',self.answer)
-		self.data, self.question, self.answer, self.answers = select_question_and_answers()
+		self.data, self.question, self.question_info, self.answer, self.answers = select_question_and_answers()
 		self.button_action()
 
 	def if_question_correct(self):
 		popup = Popup(title='Information', content=Label(text=f'Correct\n\nStrain: {self.question}\n\nParents: {self.answer}\n\nscore  :  {str(int(self.score)+1)+" / "+str(self.max_label)}'),
                       size_hint=(None, None),
-                      size=(500, 500),
-                      pos_hint={'x': 550.0 / self.width,
-                                'y': 300.0 / self.height},
-                      )
+                      size=(500, 500))
+
 		popup.open()
 		self.button1.text = ''
 		self.button2.text = ''
@@ -98,17 +102,15 @@ class QuestionWindow(GridLayout):
 		self.questionLabel.text = ''
 		self.score += 1
 		self.scoreLabel.text = str(int(self.score)) + " / " + str(self.max_label)
-		# print('Correct answer : ',self.answer)
-		self.data, self.question, self.answer, self.answers = select_question_and_answers()
+		self.data, self.question, self.question_info, self.answer, self.answers = select_question_and_answers()
 		self.button_action()
 
 	def kill_screen(self):
-		computation = round(int(self.score)/int(self.max_label))
-		grade = self.compute_grade(round(computation))
-		popup = Popup(title='Kill Screen', size_hint=(None, None), size=(500, 500), 
-						pos_hint={'x': 550.0 / self.width, 'y': 300.0 / self.height})
+		computation = round(100*int(self.score)/int(self.max_label))
+		grade = self.compute_grade(computation)
+		popup = Popup(title='Kill Screen', size_hint=(None, None), size=(500, 500))
 		content = BoxLayout(orientation='vertical', spacing=10, padding=10)
-		content.add_widget(Label(text=f'Final Score: {str(self.score)} / {str(self.max_label)}\n\nPercentile: {computation} {grade}'))
+		content.add_widget(Label(text=f'Final Score: {str(self.score)} / {str(self.max_label)}\n\nPercentile: {computation}% {grade}'))
 		content.add_widget(Button(text='Close', on_press=self.terminate_app))
 		popup.content = content
 		popup.open()
@@ -116,19 +118,18 @@ class QuestionWindow(GridLayout):
 	def terminate_app(self, *args):
 		App.get_running_app().stop()
 
-	def compute_grade(self, perc):
-		p = perc*10
-		if p==10:
+	def compute_grade(self, p):
+		if p==100:
 			return "A+ Perfect score! Holy canna-shit!"
-		elif p==9:
+		elif p>=90:
 			return "A Almost perfect."
-		elif p==8:
+		elif p>=80:
 			return "B You are quite bueno."
-		elif p==7:
+		elif p>=70:
 			return "C Good job. Keep playing."
-		elif p==6:
+		elif p>=60:
 			return "D Still, not half bad...."
-		elif p<6:
+		elif p<60:
 			return "You are garbage. Keep playing!"
 
 	def button1_action(self):
@@ -160,6 +161,17 @@ class QuestionWindow(GridLayout):
 		self.remainingLabel.text = str(self.remaining)
 		if self.remaining < 0:
 			self.kill_screen()
+
+		self.strain_info_box.geneticsLabel.text = self.question_info.genetics
+		self.strain_info_box.thcLabel.text = self.question_info.thc
+		self.strain_info_box.cbdLabel.text = self.question_info.cbd
+		if "[" in self.question_info.flavor:
+			self.question_info.flavor = ', '.join(eval(self.question_info.flavor))
+		self.strain_info_box.flavorLabel.text = self.question_info.flavor
+		if "[" in self.question_info.effect:
+			self.question_info.effect = ', '.join(eval(self.question_info.effect))
+		self.strain_info_box.effectLabel.text = self.question_info.effect
+
 		correct = random.randint(1,4)
 		self.questionLabel.text = self.question
 		if correct == 1:

@@ -6,14 +6,26 @@
 	scoreLabel : scoreLabel
 	questionLabel: questionLabel
 	remainingLabel: remainingLabel
+	strain_info_box: strain_info_box
 	cols: 3
 
 	GridLayout:
-		rows: 3
+		rows: 4
+		row_default_height: 60
 
 		GridLayout:
+			size_hint_y: 0.02
 			cols: 2
+			row_default_height: 30
+			row_force_default: True
 			rows: 2
+			background_color: (0, 0, 1, 1)
+			canvas.before:
+				Color:
+					rgba: self.background_color
+				Rectangle:
+					size: self.size
+					pos: self.pos		
 			Label:
 				text: "score : "
 			Label:
@@ -27,11 +39,19 @@
 
 
 		GridLayout:
-			rows: 1
+			rows: 2
 			cols: 1
+			background_color: (0, 0.5, 0.5, 1)
+			canvas.before:
+				Color:
+					rgba: self.background_color
+				Rectangle:
+					size: self.size
+					pos: self.pos		
 			Label:
 				id: questionLabel
 				text: ''
+				font_size: 35
 
 
 		GridLayout:
@@ -41,23 +61,87 @@
 			Button:
 				id: button1
 				text: ''
+				font_size: 20
 				on_release:
 					root.button1_action()
+				background_color: (0.7, 0.38, 0, 1)
 
 			Button:
 				id: button2
 				text: ''
+				font_size: 20
 				on_release:
 					root.button2_action()
+				background_color: (0.7, 0.38, 0, 1)
 
 			Button:
 				id: button3
 				text: ''
+				font_size: 20
 				on_release:
 					root.button3_action()
+				background_color: (0.7, 0.38, 0, 1)
 
 			Button:
 				id: button4
 				text: ''
+				font_size: 20
 				on_release:
 					root.button4_action()
+				background_color: (0.7, 0.38, 0, 1)
+
+		GridLayout:
+			cols: 1
+			rows: 2
+			row_default_height: 90
+			row_force_default: True
+			background_color: (0, 0.5, 0.5, 1)
+			canvas.before:
+				Color:
+					rgba: self.background_color
+				Rectangle:
+					size: self.size
+					pos: self.pos		
+
+			GridLayout:
+				row_default_height: 30
+				row_force_default: True
+
+				geneticsLabel: geneticsLabel
+				thcLabel: thcLabel		
+				cbdLabel: cbdLabel			
+				flavorLabel: flavorLabel			
+				effectLabel: effectLabel	
+				cols: 3
+				rows: 4
+				id: strain_info_box
+				Label:
+					text: "Genetics"
+				Label:
+					text: "THC"
+				Label:
+					text: "CBD"
+				Label:
+					id: geneticsLabel
+					text: ""		
+				Label:
+					id: thcLabel		
+					text: ""		
+				Label:
+					id: cbdLabel			
+					text: ""
+			GridLayout:
+				row_default_height: 30
+				row_force_default: True
+				cols: 2
+				rows: 2
+				Label:
+					text: "Flavor & Smell"		
+				Label:
+					text: "Effects"
+				Label:
+					id: flavorLabel			
+					text: ""		
+				Label:
+					id: effectLabel			
+					text: ""		
