@@ -1,25 +1,49 @@
 [app]
+# NOTES -----------------------------------------
+
+# Need Cython 0.29
+# Need Python 3.7 or better (Using 3.9 in myenv)
+# Need Install Gradle to system
+# Installed Buildozer from source this time
+
+# `myenv` moved to its own folder
+# Don't forget `bash` so it's standard terminal
+# `source` myenv/bin/activate
+
+# java -version <-- check active
+# archlinux-java status <-- check available
+# sudo archlinux-java set java-11-openjdk
+# echo $JAVA_HOME <-- 
+# `export JAVA_HOME=/usr/lib/jvm/java-11-openjdk` <-- did this for Gradle
+# Confused because Buildozer only seems to work with java-8-openjdk
+# I guess it's the Android.jdk that needs to be 8
+
+# Command: `buildozer -v android debug deploy run`
+# `buildozer clean` should clear the cache.
+# export PATH=$PATH:/usr/lib/jvm/java-11-openjdk/bin
+
+# -----------------------------------------------
 
 # (str) Title of your application
 title = Cannabis Strain Quiz App
 
 # (str) Package name
-package.name = cannabis-strain-quiz-app
+package.name = CannabisStrainQuizApp
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.cannabis-strain-quiz-app
+package.domain = com.steinunlimited.cannabisstrainquizapp
 
 # (str) Source code where the main.py live
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,csv
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
-#source.exclude_exts = spec
+#source.exclude_exts = spec,txt
 
 # (list) List of directory to exclude (let empty to not exclude anything)
 #source.exclude_dirs = tests, bin, venv
@@ -74,7 +98,8 @@ osx.kivy_version = 1.9.1
 #
 
 # (bool) Indicate if the application should be fullscreen or not
-fullscreen = 0
+fullscreen = 1
+# fullscreen = 0
 
 # (string) Presplash background color (for android toolchain)
 # Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
@@ -118,11 +143,25 @@ fullscreen = 0
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
 
-# (str) Android NDK directory (if empty, it will be automatically downloaded.)
-#android.ndk_path =
+# ADDED updated from 8 to 11
+# JDK version to use
+android.jdk_version = 11
 
+# ADDED unclear what to do here, switched to 11
+# Set the JAVA_HOME variable to the path of your JDK installation
+# env.JAVA_HOME = /usr/lib/jvm/java-8-openjdk/bin/javac
+# android.javac_cmd = /usr/lib/jvm/java-8-openjdk/bin/javac
+android.javac_cmd = /usr/lib/jvm/java-11-openjdk/bin/javac
+
+# (str) Android NDK directory (if empty, it will be automatically downloaded.)
+# ADDED but commented out because it installs on its own
+# android.ndk_path = /opt/android-ndk/platform-tools
+
+# ADDED but commented because installs on its own
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
-#android.sdk_path =
+# android.sdk_path = /opt/android-sdk
+# android.sdk_tools_path = /opt/android-sdk/cmdline-tools/latest/bin/
+# android.sdk = /opt/android-sdk
 
 # (str) ANT directory (if empty, it will be automatically downloaded.)
 #android.ant_path =
@@ -199,6 +238,10 @@ fullscreen = 0
 # each of a resource kind:  drawable, xml, etc...
 # android.add_resources = legal_resources
 #android.add_resources =
+
+# ADDED but commented out because I installed gradle to system
+# (str) Gradle version to use
+# android.gradle_version = 6.7.1
 
 # (list) Gradle dependencies to add
 #android.gradle_dependencies =
