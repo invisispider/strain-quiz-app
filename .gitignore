@@ -13,3 +13,8 @@ database-editor
 database-editor/*
 
 ARCHIVE*
+
+.buildozer
+
+venv
+myenv
